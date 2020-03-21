@@ -1,11 +1,11 @@
-FROM openjdk:8u212-jdk-stretch
+FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
-RUN useradd -ms /bin/bash wurstuser
+RUN net user /add wurstuser
 USER wurstuser
-WORKDIR /home/wurstuser
+WORKDIR /users/wurstuser
 
-RUN wget https://grill.wurstlang.org/hudson/job/WurstSetup/135/artifact/downloads/WurstSetup.jar
+RUN wget https://grill.wurstlang.org/hudson/job/WurstSetup/143/artifact/downloads/WurstSetup.jar
 RUN java -jar WurstSetup.jar install wurstscript
 
-ENV PATH="/home/wurstuser/.wurst/:${PATH}"
-RUN chmod u+x /home/wurstuser/.wurst/grill
+ENV PATH="/users/wurstuser/.wurst/:${PATH}"
+RUN icacls /users/wurstuser/.wurst/grill /grant wurstuser:(f,wdac)
